@@ -15,20 +15,20 @@ Por ahora, nos centraremos en las funciones de R y las posibles interacciones en
 
 ### Secuencias:
 ```{r Secuencias}
-seq(1,16)
-seq(1,16,3)
+seq(1,16) #Me arroja todos los números entre el 1 y el 16
+seq(1,16,3) #Lo mismo de arriba pero de 3 en 3
 ```
 
 ### Repeticiones:
 ```{r Repeticiones} 
-rep(1,4)
-rep(c(1,5,8,2),4)
+rep(1,4) #Que se repita el valor de la izquiera, las veces que dice a la derecha
+rep(c(1,5,8,2),4) #Que se repita la lista 4 veces
 ```
 
 ### Ordenar
 ```{r Ordenar} 
 sort(c(1,9,8,4,6,3,6,5,2))
-sort(c(1,9,8,4,6,3,6,5,2), decreasing = T)
+sort(c(1,9,8,4,6,3,6,5,2), decreasing = T) #la T es de true
 ```
 
 ### Análisis básico
@@ -66,13 +66,13 @@ Titanic[1,]  ## Arroja información sobre la primera fila
 Titanic[6:14,]  ## Arroja información sobre la fila 6 a 14
 Titanic[,4]  ## Arroja información sobre la cuarta columna
 Titanic[,2:8]  ## Arroja información sobre la columna 2 a 8
-Titanic[,.(Survived,Age)]  ## También se puede con nombres de variables
+Titanic[,.(Survived,Age)]  ## También se puede con nombres de variables de columnas
 ```
 
 Ahora, aprendamos algunas estrategias de filtrado básico:
 
 ```{r filtrado}
-Titanic[Survived == 1,]  ## Me quedo con aquellas filas que cumplen la condición de que el individuo sobrevivió
+Titanic[Survived == 1,]  ## Me quedo con aquellas filas que cumplen la condición de que el individuo sobrevivió, porque el 1 significa True como booleano
 Titanic[Pclass %in% c(1,3),]  ## Me quedo con aquellas filas que cumplen la condición de que el individuo era de clase 1 o 3
 Titanic[Age %between% c(30,50),]  ## Me quedo con aquellas filas que cumplen la condición de que el individuo tenía entre 30 y 50 años
 Titanic[Sex == "female", .(Survived,Age)]  ## Me quedo con la información de sobrevivencia y edad para el grupo de mujeres
@@ -81,10 +81,10 @@ Titanic[Sex == "female", .(Survived,Age)]  ## Me quedo con la información de so
 Para más información sobre como manipular bases de datos, se recomienda visitar la página <https://atrebas.github.io/post/2019-03-03-datatable-dplyr/>, o bien consultar en páginas como Rpubs y Stack Overflow. Ahora si, veamos los datos de dicha base.
 
 ```{r Viendo base}
-View(Titanic)
-head(Titanic,5)  #Alternativa
-nrow(Titanic)
-ncol(Titanic)
+View(Titanic) #Me muestra toda la base
+head(Titanic,5)  #Alternativa #Me muestra las primras 5 filas de información
+nrow(Titanic) #Cuantas filas tiene
+ncol(Titanic) #Cuantas columnas tiene la base
 ```
 
 ¿Que clase de objeto es dicha base de datos? ¿Y cada una de sus variables?
@@ -105,13 +105,14 @@ unique(Titanic[,Embarked])  ## intentar con función "levels" para el caso de co
 unique(Titanic[,Sex])
 unique(Titanic[,Pclass])
 unique(Titanic[,Survived])
+#Me dice que contiene cada una de las columnas, en la base de datos.
 ```
 
 En este caso son pocas categorías, pero: ¿que ocurriría si necesitamos saber cuantas categorías hay en la columna "Oficio" del censo de 2017? 
 
 ```{r N° Categorías}
 length(unique(Titanic[,Age]))  #Por ejemplo   
-length(unique(Titanic[,Name]))
+length(unique(Titanic[,Name])) #Cuántas categorías distintas hay.
 ```
 
 ¿Existe alguna manera de sintetizar todo lo visto hasta ahora? Por supuesto que si.
@@ -127,20 +128,20 @@ Titanic[,max(Age, na.rm = T)]  # ¿Por qué agregar na.rm = T? Hay que eliminar 
 Titanic[,min(Age, na.rm = T)]
 Titanic[,mean(Age, na.rm = T)]
 Titanic[,median(Age, na.rm = T)]
-Titanic[,quantile(Age, na.rm = T)]
+Titanic[,quantile(Age, na.rm = T)] #Todo basado en la edad
 ```
 
 Existe una función que nos puede entregar los datos antes calculados, pero solo ejecutando un comando.
 
 ```{r summary}
-summary(Titanic)
+summary(Titanic) #Nos entrega los datos por columna.
 ```
 
 ¿Y si deseamos ver dicho análisis separando a los sobrevivientes de aquellos que murieron? ¿Como podemos ver dichos datos?
 
 ```{r Análisis básico Titanic 2} 
 Titanic[,max(Age, na.rm = T), by = "Survived"]
-Titanic[,min(Age, na.rm = T), by = "Survived"]
+Titanic[,min(Age, na.rm = T), by = "Survived"] #Me muestra los datos tanto de los sobrevivientes como de los no sobrevivientes
 Titanic[,mean(Age, na.rm = T), by = "Survived"]
 Titanic[,median(Age, na.rm = T), by = "Survived"]
 Titanic[,quantile(Age, na.rm = T), by = "Survived"]

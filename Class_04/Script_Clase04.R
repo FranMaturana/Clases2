@@ -12,7 +12,7 @@
 library(readxl)
 library(data.table)
 
-
+rm(list=ls())
 
 casos<-data.table(read_excel("Class_02/2020-03-17-Casos-confirmados.xlsx",na = "—",trim_ws = TRUE,col_names = TRUE),stringsAsFactors = FALSE)
 
@@ -43,7 +43,7 @@ casosRM[,.N,by=.(`Centro de salud`)]
 
 class(casosRM$Sexo)
 
-casosRM[,Sexo:=factor(Sexo)]
+casosRM[,Sexo:=factor(Sexo)] #Preguntarle al Renato que hace esto
 
 head(casosRM$Sexo)
 head(as.numeric(casosRM$Sexo))
@@ -58,9 +58,9 @@ names(casosRM)
 obj1<-casosRM[,.N,by=.(`Centro de salud`)]
 
 
-obj1[,sum(N,na.rm = T)]
+obj1[,sum(N,na.rm = T)] #Me da cuantos casos son en total
 
-obj1[,porc:=N/sum(N,na.rm = T)]
+obj1[,porc:=N/sum(N,na.rm = T)] #Le creo una columna extra a centros de salud con el porcentaje del total de cada centro de contagiados
 
 # collapsing (colapsar) by average age
 
@@ -107,12 +107,12 @@ text(x =G$`Casos confirmados.Femenino`,y=G$`Casos confirmados.Masculino`, G$`Cen
 #ggplot2
 library(ggplot2)
 names(E)
-ggplot(data = E,mapping = aes(x = AvAge,y=`Casos confirmados`)) + geom_point()
+ggplot(data = E,mapping = aes(x = AvAge,y=`Casos confirmados`)) + geom_point() #crea un grafico con las variables en el eje x avage y en el eje y casos confirmdos, grafico de puntos
 
 
 ggplot(data = G,mapping = aes(x=`Casos confirmados.Femenino`,y=`Casos confirmados.Masculino`))+geom_point()
 
-p1<-ggplot(G,aes(x=`Casos confirmados.Femenino`,y=`Casos confirmados.Masculino`))+geom_point(aes(size=AvAge.Femenino,colour=AvAge.Masculino))+geom_text(aes(label=`Centro de salud`),size=2,check_overlap = T)
+p1<-ggplot(G,aes(x=`Casos confirmados.Femenino`,y=`Casos confirmados.Masculino`))+geom_point(aes(size=AvAge.Femenino,colour=AvAge.Masculino))+geom_text(aes(label=`Centro de salud`),size=2,check_overlap = T) #Preguntarle a Renato
 
 ggplot(data = E,mapping = aes(x=AvAge,y=`Casos confirmados`))+geom_point()+facet_wrap(~Sexo)+geom_smooth(method = 'lm',se=F) + geom_smooth(method = 'loess',col='red',se=F)
 
@@ -124,21 +124,21 @@ ggplotly(p1)
 
 #histograms
 
-ggplot(casos,aes(x=Edad))+geom_histogram()
-ggplot(E,aes(x=AvAge))+geom_histogram()
+ggplot(casos,aes(x=Edad))+geom_histogram() #Me muestra un histograma de casos por edad
+ggplot(E,aes(x=AvAge))+geom_histogram() 
 
-# Kernel Densities
+# Kernel Densities Es como dibujar una linea sobre el gráfico de barra.
 
-ggplot(E,aes(x=AvAge))+geom_density()
-ggplot(E,aes(x=AvAge,group=Sexo))+geom_density()
-ggplot(E,aes(x=AvAge,group=Sexo,colour=Sexo))+geom_density()
-ggplot(E,aes(x=AvAge,group=Sexo,colour=Sexo))+geom_density()+facet_wrap(~Sexo)
+ggplot(E,aes(x=AvAge))+geom_density() #Me da un gráfico de densidad
+ggplot(E,aes(x=AvAge,group=Sexo))+geom_density() #Lo mismo de arriba pero por sexo, separados
+ggplot(E,aes(x=AvAge,group=Sexo,colour=Sexo))+geom_density() #Separa los colores por sexo en e mismo gráfico
+ggplot(E,aes(x=AvAge,group=Sexo,colour=Sexo))+geom_density()+facet_wrap(~Sexo) #Pone dos gráficos que contrastan el sexo en ambos.
 
 
 #looking at the whole country
 casos<-data.table(read_excel("Class_02/2020-03-17-Casos-confirmados.xlsx",na = "—",trim_ws = TRUE,col_names = TRUE),stringsAsFactors = FALSE)
 
-ggplot(casos,aes(x=Edad,group=Sexo,fill=Sexo))+geom_histogram()+facet_wrap(~factor(Región))
+ggplot(casos,aes(x=Edad,group=Sexo,fill=Sexo))+geom_histogram()+facet_wrap(~factor(Región)) #Hizo mini gráficos por región donde se puede ver el promedio de la edad de los contagiados por sexo
 
 #como sacamos el "fememino"?
 
@@ -208,7 +208,7 @@ ggplot(zonas_valparaiso) +
   geom_sf(aes(fill = AdultosMayores, geometry = geometry)) +
   scale_fill_gradientn(colours = rev(paleta), name = "Poblacion\nadulto mayor") +
   labs(title = "Poblacion de 65 años y más", subtitle = "Valparaíso y Viña del Mar") +
-  theme_minimal(base_size = 11)
+  theme_minimal(base_size = 11) #Aca le saco lo gris de atras y le puso el tamaño de letra
 
 # creating a fake spatial distribution of adult population in space
 zonas_valparaiso2<-cbind(zonas_valparaiso[,c("geocodigo","codigo_comuna","codigo_provincia","codigo_region","geometry")],"AdultosMayores"=sample(zonas_valparaiso$AdultosMayores,size = length(zonas_valparaiso$AdultosMayores)))

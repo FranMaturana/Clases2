@@ -8,6 +8,7 @@ params:
 ---
 
 ```{r setup, include = FALSE}
+
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -50,7 +51,7 @@ ggplot(data = cat_ocup, aes(x = cae_general_red, y = V1, fill = cae_general_red)
   geom_bar(stat="identity")
 ```
 
-Supongamos que, aparte de verlo por categoría ocuacional, sería bueno observar para hombres y mujeres por separado:
+Supongamos que, aparte de verlo por categoría ocupacional, sería bueno observar para hombres y mujeres por separado:
 
 ```{r grafico de barras 2}
 ggplot(data = Tabla_19_19[mes_central == params$month,], aes(x = cae_general_red, y = V1, fill = cae_general_red)) + 
